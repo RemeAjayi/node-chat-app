@@ -15,15 +15,31 @@ app.use(express.static(publicPath));
 io.on('connection', (socket)=>{
 console.log('New user connected');
 
-//must match the listener in the client javascript
-socket.on('createMessage', function(message){
-console.log('Create Message', message);
-io.emit('newMessage', {
-  from: message.from,
-  text: message.text,
+socket.emit('newMessage', 
+{
+  from: 'Admin',
+  text: 'Welcome to the group',
+  createdAt: new Date().getTime()
+});
+socket.broadcast.emit('newMessage', {
+  from: 'Admin',
+  text:'New user just joined',
   createdAt: new Date().getTime()
 });
 
+//must match the listener in the client javascript
+socket.on('createMessage', function(message){
+console.log('Create Message', message);
+// io.emit('newMessage', {
+//   from: message.from,
+//   text: message.text,
+//   createdAt: new Date().getTime()
+// });
+// socket.broadcast.emit('newMessage', {
+//   from: message.from,
+//   text: message.text,
+//   createdAt: new Date().getTime()
+// });
 });
 
 socket.on('disconnect', ()=>{
