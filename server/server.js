@@ -15,6 +15,16 @@ app.use(express.static(publicPath));
 io.on('connection', (socket)=>{
 console.log('New user connected');
 
+socket.emit("newMessage", {
+  from: 'mike@example.com',
+  text:'hey, what\'s up',
+  timestamp: 123
+});
+//must match the listener in the client javascript
+socket.on('createMessage', function(newMessage){
+console.log('Create Message', newMessage);
+});
+
 socket.on('disconnect', ()=>{
   console.log('Client disconnected');
      });
