@@ -22,3 +22,21 @@ function () {
   
 });
 });
+
+var locationButton = $('#send-location');
+locationButton.on('click', function()
+{
+if(!navigator.geolocation)
+{
+    alert('Geolocation not supported');
+}
+navigator.geolocation.getCurrentPosition(function(position){
+    socket.emit('createLocationMessage', {
+     longitude: position.coords.longitude,
+     latitude: position.coords.latitude
+    });
+},
+function(){
+    alert('Unable to fetch position');
+});
+});
